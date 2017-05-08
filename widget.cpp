@@ -216,12 +216,6 @@ void Widget::on_smoothWidget_currentChanged(int index)
     }
 }
 
-void Widget::on_twentySmoothPushButton_clicked()
-{
-    for (int i = 0; i < 20; i++)
-        ui->smoothButton->click();
-}
-
 void Widget::on_exportPushButton_clicked()
 {
     QString exportFileName = QFileDialog::getSaveFileName(this, 0,"/home/denes/Documents/Labor/Viking/1000Viking/Results");

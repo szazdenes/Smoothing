@@ -42,7 +42,6 @@ private slots:
     void loadFromFile();
 
     void on_smoothWidget_currentChanged(int index);
-    void on_twentySmoothPushButton_clicked();
     void on_exportPushButton_clicked();
     void on_smoothButton_clicked();
     void on_loadButton_clicked();
