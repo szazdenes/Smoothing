@@ -286,3 +286,58 @@ void Widget::on_loadButton_clicked()
 {
     loadFromFile();
 }
+
+void Widget::on_swiftSmoothPushButton_clicked()
+{
+    degList.clear(); errorList.clear(); orderedFileNames.clear();
+
+    QDir openDir = QFileDialog::getExistingDirectory(this, 0, "/home/denes/Documents/Labor/Viking/1000Viking/felhők szilvi", QFileDialog::ShowDirsOnly);
+    QStringList dataFiles = openDir.entryList(QStringList("*.csv"), QDir::Files | QDir::NoDotAndDotDot);
+
+    orderedFileNames = dataFiles;
+
+    int fileSize = dataFiles.size();
+    double deg = -99999, error = -99999;
+
+    for (int k = 0; k < fileSize; k++) {
+
+        QFile openFile(openDir.absoluteFilePath(dataFiles.at(k)));
+
+        if(!openFile.open(QIODevice::ReadOnly | QIODevice::Text))
+            qDebug("baj");
+
+        QTextStream read(&openFile);
+        QString line;
+
+        QVector<double> degVector, errorVector;
+
+        for (int i=0; i<3; i++)
+            read.readLine();
+
+        while (!read.atEnd()){
+            line = read.readLine();
+            QTextStream stream(&line);
+
+            stream >> deg >> error;
+
+            degVector.append(deg);
+            errorVector.append(error);
+        }
+
+        openFile.close();
+
+        degList.append(degVector);
+        errorList.append(errorVector);
+    }
+
+    QVector<double> smoothedVector;
+
+    for (int i = 0; i < errorList.size(); i++) {
+        smoothedVector = gaussianSmoothing((QVector<double>&) errorList.at(i), ui->kernelSpinBox->value(), (double) ui->sigmaSpinBox->value());
+        errorList.replace(i,smoothedVector);
+    }
+
+    QSound::play("../NFF-confirmation.wav");
+
+
+}

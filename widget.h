@@ -5,6 +5,7 @@
 #include <qwt/build/include/qwt_plot_curve.h>
 #include <QDir>
 #include <QStringList>
+#include <QSound>
 
 
 namespace Ui {
@@ -45,6 +46,7 @@ private slots:
     void on_exportPushButton_clicked();
     void on_smoothButton_clicked();
     void on_loadButton_clicked();
+    void on_swiftSmoothPushButton_clicked();
 };
 
 
